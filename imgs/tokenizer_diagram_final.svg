@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="650" xmlns="http://www.w3.org/2000/svg">
+  <!-- Professional, clean design with better spacing -->
+  
+  <!-- Background -->
+  <rect width="1000" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1f2937">
+    Tokenizer: Translation Layer
+  </text>
+  <text x="500" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#6b7280">
+    Between Raw Text and Large Language Models
+  </text>
+  
+  <!-- Decorative elements - moved to space between title and boxes -->
+  <circle cx="490" cy="100" r="3" fill="#3b82f6"/>
+  <circle cx="500" cy="100" r="3" fill="#ef4444"/>
+  <circle cx="510" cy="100" r="3" fill="#10b981"/>
+  
+  <!-- Main flow boxes with increased spacing -->
+  <!-- Raw Text -->
+  <rect x="80" y="120" width="180" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="170" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">
+    Raw Text
+  </text>
+  <text x="170" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    "Hello world"
+  </text>
+  <text x="170" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    "Machine learning"
+  </text>
+  <text x="170" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    "Natural language"
+  </text>
+  
+  <!-- Tokenizer -->
+  <rect x="410" y="120" width="180" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="500" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#b91c1c">
+    Tokenizer
+  </text>
+  <text x="500" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#b91c1c">
+    • Separate training
+  </text>
+  <text x="500" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#b91c1c">
+    • Builds vocabulary
+  </text>
+  <text x="500" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#b91c1c">
+    • Translation layer
+  </text>
+  
+  <!-- LLM -->
+  <rect x="740" y="120" width="180" height="100" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="830" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#047857">
+    Large Language Model
+  </text>
+  <text x="830" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#047857">
+    • Processes tokens
+  </text>
+  <text x="830" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#047857">
+    • Generates responses
+  </text>
+  <text x="830" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#047857">
+    • Learns patterns
+  </text>
+  
+  <!-- Flow arrows - increased spacing for better separation -->
+  <!-- Encode -->
+  <path d="M 260 165 L 410 165" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrowheadRed)"/>
+  <text x="335" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">
+    ENCODE
+  </text>
+  
+  <!-- Forward -->
+  <path d="M 590 170 L 740 170" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowheadGreen)"/>
+  <text x="665" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#059669">
+    TOKENS
+  </text>
+  
+  <!-- Decode (reverse) - increased spacing from ENCODE -->
+  <path d="M 410 195 L 260 195" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowheadBlue)"/>
+  <text x="335" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">
+    DECODE
+  </text>
+  
+  <!-- Token examples below with arrow connection -->
+  <rect x="410" y="300" width="180" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="500" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#d97706">
+    Token Examples
+  </text>
+  <text x="500" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d97706">
+    [101, 7592, 2088, 102]
+  </text>
+  <text x="500" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d97706">
+    [101, 2129, 1132, 102]
+  </text>
+  
+  <!-- Arrow from Tokenizer to Token Examples -->
+  <path d="M 500 220 L 500 300" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowheadOrange)"/>
+  
+  <!-- Key information boxes at bottom - centered for symmetry -->
+  <!-- Left box -->
+  <rect x="100" y="440" width="300" height="100" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="250" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">
+    Training Process
+  </text>
+  <text x="250" y="485" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Tokenizer has its own separate training set
+  </text>
+  <text x="250" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Independent component from LLMs
+  </text>
+  <text x="250" y="515" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Optimized for vocabulary building
+  </text>
+  
+  <!-- Right box -->
+  <rect x="600" y="440" width="300" height="100" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="750" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">
+    Core Functions
+  </text>
+  <text x="750" y="485" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Encoding: Raw text → Token sequence
+  </text>
+  <text x="750" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Decoding: Token sequence → Raw text
+  </text>
+  <text x="750" y="515" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Acts as translation layer between text and LLMs
+  </text>
+  
+  <!-- Arrow marker definitions - consistent size, matching destination colors -->
+  <defs>
+    <marker id="arrowheadRed" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#ef4444"/>
+    </marker>
+    <marker id="arrowheadGreen" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#10b981"/>
+    </marker>
+    <marker id="arrowheadBlue" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowheadOrange" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

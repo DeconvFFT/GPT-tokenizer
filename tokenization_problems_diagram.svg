@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
+  <!-- Professional, clean design focusing on tokenization problems -->
+  
+  <!-- Background -->
+  <rect width="1000" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1f2937">
+    Tokenization Problems in LLMs
+  </text>
+  <text x="500" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#6b7280">
+    Common Issues That Arise from Poor Tokenization
+  </text>
+  
+  <!-- Decorative elements between title and content -->
+  <circle cx="490" cy="100" r="3" fill="#ef4444"/>
+  <circle cx="500" cy="100" r="3" fill="#10b981"/>
+  <circle cx="510" cy="100" r="3" fill="#3b82f6"/>
+  
+  <!-- Main problem categories - organized by type of issue -->
+  <!-- Language & Spelling Issues -->
+  <rect x="80" y="120" width="200" height="120" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#b91c1c">
+    Language &amp; Spelling
+  </text>
+  <text x="180" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#b91c1c">
+    • Can't spell words
+  </text>
+  <text x="180" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#b91c1c">
+    • Worse at non-English
+  </text>
+  <text x="180" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#b91c1c">
+    • Bad at simple tasks
+  </text>
+  
+  <!-- String & Arithmetic Issues -->
+  <rect x="320" y="120" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="420" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#d97706">
+    String &amp; Math Tasks
+  </text>
+  <text x="420" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d97706">
+    • Can't reverse strings
+  </text>
+  <text x="420" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d97706">
+    • Bad at arithmetic
+  </text>
+  <text x="420" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d97706">
+    • Poor coding ability
+  </text>
+  
+  <!-- Training & Stability Issues -->
+  <rect x="560" y="120" width="200" height="120" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="660" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">
+    Training &amp; Stability
+  </text>
+  <text x="660" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    • Training interruptions
+  </text>
+  <text x="660" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    • Breaks with prompts
+  </text>
+  <text x="660" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    • Regular token issues
+  </text>
+  
+  <!-- Root Cause - Bad Tokenization -->
+  <rect x="320" y="300" width="200" height="80" rx="8" fill="#fecaca" stroke="#dc2626" stroke-width="3"/>
+  <text x="420" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#991b1b">
+    Root Cause
+  </text>
+  <text x="420" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#991b1b">
+    BAD TOKENIZATION
+  </text>
+  
+  <!-- Connections to root cause -->
+  <path d="M 180 240 L 320 340" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrowheadRed)"/>
+  <path d="M 420 240 L 420 300" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrowheadRed)"/>
+  <path d="M 660 240 L 520 340" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrowheadRed)"/>
+  
+  <!-- Solutions & Tools section -->
+  <rect x="80" y="420" width="300" height="100" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="230" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#047857">
+    Solutions &amp; Tools
+  </text>
+  <text x="230" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#047857">
+    • Use tiktoken for testing
+  </text>
+  <text x="230" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#047857">
+    • Browser-based tokenizer
+  </text>
+  <text x="230" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#047857">
+    • YAML over JSON preference
+  </text>
+  
+  <!-- Best Practices section -->
+  <rect x="420" y="420" width="300" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="570" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#4338ca">
+    Best Practices
+  </text>
+  <text x="570" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4338ca">
+    • Test tokenization quality
+  </text>
+  <text x="570" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4338ca">
+    • Monitor training stability
+  </text>
+  <text x="570" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4338ca">
+    • Validate on edge cases
+  </text>
+  
+  <!-- Information boxes at bottom -->
+  <!-- Left box -->
+  <rect x="100" y="560" width="300" height="80" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="250" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">
+    Why Tokenization Matters
+  </text>
+  <text x="250" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Foundation of LLM performance
+  </text>
+  <text x="250" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Affects all downstream tasks
+  </text>
+  
+  <!-- Right box -->
+  <rect x="600" y="560" width="300" height="80" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="750" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">
+    Testing Resources
+  </text>
+  <text x="750" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • tiktokenizer.vercel.app
+  </text>
+  <text x="750" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#4b5563">
+    • Browser-based analysis
+  </text>
+  
+  <!-- Arrow marker definitions -->
+  <defs>
+    <marker id="arrowheadRed" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#dc2626"/>
+    </marker>
+  </defs>
+</svg>

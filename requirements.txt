@@ -1,0 +1,13 @@
+pandas
+numpy
+torch
+torchvision
+transformers
+datasets
+peft
+trl
+tiktoken
+jupyter 
+ipykernel
+pydantic 
+pytest
