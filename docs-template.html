@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-Tokenizer Documentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown.min.css">
+    <style>
+        .markdown-body { box-sizing: border-box; min-width: 200px; max-width: 980px; margin: 0 auto; padding: 45px; }
+        @media (max-width: 767px) { .markdown-body { padding: 15px; } }
+        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 40px 0; }
+        .nav-card { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 20px; text-decoration: none; color: #24292e; transition: all 0.2s ease; }
+        .nav-card:hover { border-color: #0366d6; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .nav-card h3 { margin-top: 0; color: #0366d6; }
+        .hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: -45px -45px 45px -45px; }
+        .hero h1 { font-size: 3em; margin-bottom: 20px; }
+        .hero p { font-size: 1.2em; opacity: 0.9; }
+        .status { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 20px; margin: 20px 0; }
+        .last-updated { color: #6a737d; font-size: 0.9em; }
+    </style>
+</head>
+<body class="markdown-body">
+    <div class="hero">
+        <h1>🚀 GPT-Tokenizer</h1>
+        <p>Your complete guide to understanding and implementing tokenization algorithms used in Large Language Models</p>
+    </div>
+    
+    <div class="status">
+        <strong>📅 Last Updated:</strong> <span class="last-updated" id="last-updated"></span><br>
+        <strong>🔄 Auto-Deploy:</strong> Documentation automatically updates with every commit
+    </div>
+    
+    <h2>📚 Quick Navigation</h2>
+    <div class="nav-grid">
+        <a href="index.md" class="nav-card">
+            <h3>📋 Project Overview</h3>
+            <p>Main project README and documentation</p>
+        </a>
+        <a href="diagram_creation_prompt.md" class="nav-card">
+            <h3>🎨 Diagram Creation</h3>
+            <p>Optimized prompt for creating professional diagrams</p>
+        </a>
+        <a href="usage_guide.md" class="nav-card">
+            <h3>📖 Usage Guide</h3>
+            <p>How to use the tokenization tools</p>
+        </a>
+        <a href="GITHUB_PAGES_SETUP.md" class="nav-card">
+            <h3>🌐 GitHub Pages Setup</h3>
+            <p>How to enable automatic documentation deployment</p>
+        </a>
+        <a href="scripts/tokenisation.ipynb" class="nav-card">
+            <h3>🔧 Interactive Notebook</h3>
+            <p>Jupyter notebook with examples</p>
+        </a>
+        <a href="scripts/" class="nav-card">
+            <h3>📁 Scripts Directory</h3>
+            <p>All Python implementations and utilities</p>
+        </a>
+    </div>
+    
+    <h2>🔍 What You'll Learn</h2>
+    <ul>
+        <li><strong>Tokenization Fundamentals</strong>: How text becomes numbers for AI models</li>
+        <li><strong>BPE Algorithm</strong>: Step-by-step implementation of the compression algorithm</li>
+        <li><strong>Unicode Handling</strong>: Proper text encoding and decoding</li>
+        <li><strong>Vocabulary Building</strong>: Creating and managing token vocabularies</li>
+        <li><strong>Real-world Applications</strong>: Using production tokenizers like tiktoken</li>
+    </ul>
+    
+    <h2>🚀 Quick Start</h2>
+    <pre><code># Clone and setup
+git clone https://github.com/yourusername/gpt-tokenizer.git
+cd gpt-tokenizer
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# Start learning
+jupyter notebook scripts/tokenisation.ipynb</code></pre>
+    
+    <h2>📁 Project Structure</h2>
+    <pre><code>├── scripts/
+│   ├── tokenisation.ipynb    # Main Jupyter notebook
+│   ├── gpt4_bpe_tokenizer.py # BPE tokenizer implementation
+│   ├── regex_tokenizer.py    # Regex-based tokenizer
+│   ├── basic_tokenizer.py    # Basic tokenizer
+│   └── helpers.py            # Utility functions
+├── imgs/                     # Diagrams and visualizations
+├── tests/                    # Test files
+└── .github/workflows/        # GitHub Actions for automation</code></pre>
+    
+    <hr>
+    <p><em>Made with ❤️ for the AI/ML community</em></p>
+    <p><small>Documentation automatically updated with every commit via GitHub Pages</small></p>
+    
+    <script>
+        // Update last updated timestamp
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+        
+        // Add click tracking for analytics (optional)
+        document.querySelectorAll('.nav-card').forEach(card => {
+            card.addEventListener('click', function() {
+                console.log('Navigation clicked:', this.querySelector('h3').textContent);
+            });
+        });
+    </script>
+</body>
+</html>

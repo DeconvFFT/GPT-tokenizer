@@ -35,93 +35,85 @@ jobs:
           
       - name: Build documentation
         run: |
+          echo "🚀 Starting documentation build..."
+          
           # Create docs directory for GitHub Pages
           mkdir -p docs
+          echo "✅ Created docs directory"
           
           # Copy README as index
           cp README.md docs/index.md
+          echo "✅ Copied README.md"
           
           # Copy other documentation files
-          cp diagram_creation_prompt.md docs/
-          cp usage_guide.md docs/
+          if [ -f "diagram_creation_prompt.md" ]; then
+            cp diagram_creation_prompt.md docs/
+            echo "✅ Copied diagram_creation_prompt.md"
+          fi
+          
+          if [ -f "usage_guide.md" ]; then
+            cp usage_guide.md docs/
+            echo "✅ Copied usage_guide.md"
+          fi
+          
+          if [ -f "GITHUB_PAGES_SETUP.md" ]; then
+            cp GITHUB_PAGES_SETUP.md docs/
+            echo "✅ Copied GITHUB_PAGES_SETUP.md"
+          fi
           
           # Copy images
-          mkdir -p docs/imgs
-          cp imgs/*.svg docs/imgs/
+          if [ -d "imgs" ] && [ "$(ls -A imgs)" ]; then
+            mkdir -p docs/imgs
+            cp imgs/*.svg docs/imgs/ 2>/dev/null || echo "⚠️ No SVG files found in imgs/"
+            echo "✅ Copied images"
+          fi
           
           # Copy scripts
-          mkdir -p docs/scripts
-          cp scripts/*.py docs/scripts/
-          cp scripts/*.ipynb docs/scripts/
+          if [ -d "scripts" ]; then
+            mkdir -p docs/scripts
+            cp scripts/*.py docs/scripts/ 2>/dev/null || echo "⚠️ No Python files found in scripts/"
+            cp scripts/*.ipynb docs/scripts/ 2>/dev/null || echo "⚠️ No notebook files found in scripts/"
+            echo "✅ Copied scripts"
+          fi
           
-          # Create a simple HTML index
-          cat > docs/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>GPT-Tokenizer Documentation</title>
-              <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown.min.css">
-              <style>
-                  .markdown-body { box-sizing: border-box; min-width: 200px; max-width: 980px; margin: 0 auto; padding: 45px; }
-                  @media (max-width: 767px) { .markdown-body { padding: 15px; } }
-                  .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 40px 0; }
-                  .nav-card { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 20px; text-decoration: none; color: #24292e; transition: all 0.2s ease; }
-                  .nav-card:hover { border-color: #0366d6; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
-                  .nav-card h3 { margin-top: 0; color: #0366d6; }
-              </style>
-          </head>
-          <body class="markdown-body">
-              <h1>🚀 GPT-Tokenizer</h1>
-              <p>Your complete guide to understanding and implementing tokenization algorithms used in Large Language Models</p>
-              
-              <h2>📚 Quick Navigation</h2>
-              <div class="nav-grid">
-                  <a href="index.md" class="nav-card">
-                      <h3>📋 Project Overview</h3>
-                      <p>Main project README and documentation</p>
-                  </a>
-                  <a href="diagram_creation_prompt.md" class="nav-card">
-                      <h3>🎨 Diagram Creation</h3>
-                      <p>Optimized prompt for creating professional diagrams</p>
-                  </a>
-                  <a href="usage_guide.md" class="nav-card">
-                      <h3>📖 Usage Guide</h3>
-                      <p>How to use the tokenization tools</p>
-                  </a>
-                  <a href="scripts/tokenisation.ipynb" class="nav-card">
-                      <h3>🔧 Interactive Notebook</h3>
-                      <p>Jupyter notebook with examples</p>
-                  </a>
-              </div>
-              
-              <h2>🔍 What You'll Learn</h2>
-              <ul>
-                  <li><strong>Tokenization Fundamentals</strong>: How text becomes numbers for AI models</li>
-                  <li><strong>BPE Algorithm</strong>: Step-by-step implementation of the compression algorithm</li>
-                  <li><strong>Unicode Handling</strong>: Proper text encoding and decoding</li>
-                  <li><strong>Vocabulary Building</strong>: Creating and managing token vocabularies</li>
-                  <li><strong>Real-world Applications</strong>: Using production tokenizers like tiktoken</li>
-              </ul>
-              
-              <h2>🚀 Quick Start</h2>
-              <pre><code># Clone and setup
-git clone https://github.com/yourusername/gpt-tokenizer.git
-cd gpt-tokenizer
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-
-# Start learning
-jupyter notebook scripts/tokenisation.ipynb</code></pre>
-              
-              <hr>
-              <p><em>Made with ❤️ for the AI/ML community</em></p>
-              <p><small>Documentation automatically updated with every commit via GitHub Pages</small></p>
-          </body>
-          </html>
-          EOF
+          # Copy HTML template if it exists, otherwise create a simple one
+          if [ -f "docs-template.html" ]; then
+            cp docs-template.html docs/index.html
+            echo "✅ Copied HTML template"
+          else
+            # Create a simple fallback HTML index
+            cat > docs/index.html << 'EOF'
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>GPT-Tokenizer Documentation</title>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown.min.css">
+            </head>
+            <body class="markdown-body">
+                <h1>🚀 GPT-Tokenizer</h1>
+                <p>Documentation automatically generated by GitHub Actions</p>
+                <h2>📚 Available Files</h2>
+                <ul>
+                    <li><a href="index.md">Project Overview</a></li>
+                    <li><a href="diagram_creation_prompt.md">Diagram Creation</a></li>
+                    <li><a href="usage_guide.md">Usage Guide</a></li>
+                    <li><a href="scripts/">Scripts Directory</a></li>
+                </ul>
+            </body>
+            </html>
+            EOF
+            echo "✅ Created fallback HTML index"
+          fi
+          
+          echo "✅ Created comprehensive HTML index"
+          
+          # List what was created
+          echo "📋 Documentation files created:"
+          find docs -type f | sort
+          
+          echo "🎉 Documentation build completed successfully!"
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -138,3 +130,9 @@ jupyter notebook scripts/tokenisation.ipynb</code></pre>
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        
+      - name: Show deployment URL
+        run: |
+          echo "🚀 Documentation deployed successfully!"
+          echo "📖 Your site is available at: ${{ steps.deployment.outputs.page_url }}"
+          echo "⏰ Deployment completed at: $(date)"
