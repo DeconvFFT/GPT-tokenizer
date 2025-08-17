@@ -10,13 +10,6 @@ A comprehensive implementation of tokenization algorithms used in Large Language
 - **Interactive Learning**: Jupyter notebook with step-by-step examples
 - **Production Ready**: Integration with tiktoken for real-world applications
 
-## 📚 Documentation
-
-- **[Technical Overview](docs/README.md)** - System architecture and implementation details
-- **[API Reference](docs/API.md)** - Complete function documentation and examples
-- **[System Architecture](docs/ARCHITECTURE.md)** - Component design and data flow
-- **[ReadTheDocs Setup](README_RTD_SETUP.md)** - How to enable automatic documentation generation
-
 ## 🔧 Quick Start
 
 ```bash
@@ -31,24 +24,6 @@ pip install -r requirements.txt
 jupyter notebook scripts/tokenisation.ipynb
 ```
 
-## 🌐 Live Documentation
-
-This project automatically generates and deploys documentation to ReadTheDocs with every commit. The documentation includes:
-
-- **API Reference**: Auto-generated from Python docstrings
-- **Architecture Guide**: System design and implementation details
-- **Examples**: Practical usage examples and tutorials
-- **Performance Analysis**: Time complexity and memory usage
-
-**Documentation URL**: `https://gpt-tokenizer.readthedocs.io/`
-
-### Automatic Updates
-
-- Every commit to `main` branch triggers documentation rebuild
-- API documentation automatically extracted from code
-- Multiple formats: HTML, PDF, and ePub
-- Version control for different releases
-
 ## 📁 Project Structure
 
 ```
@@ -59,8 +34,7 @@ This project automatically generates and deploys documentation to ReadTheDocs wi
 │   ├── basic_tokenizer.py    # Basic tokenizer
 │   └── helpers.py            # Utility functions
 ├── imgs/                     # Diagrams and visualizations
-├── tests/                    # Test files
-└── .github/workflows/        # CI/CD automation for docs and testing
+└── minbpe/                   # Core tokenizer package
 ```
 
 ## 🎯 What You'll Learn
