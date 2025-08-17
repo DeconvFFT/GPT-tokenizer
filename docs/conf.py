@@ -36,8 +36,14 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.coverage',
     'sphinx.ext.todo',
-    'myst_parser',
 ]
+
+# Try to add optional extensions
+try:
+    import myst_parser
+    extensions.append('myst_parser')
+except ImportError:
+    pass
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
