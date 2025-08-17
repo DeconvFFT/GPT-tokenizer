@@ -1,0 +1,17 @@
+API Reference
+============
+
+.. automodule:: minbpe
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: minbpe.base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: main
+   :members:
+   :undoc-members:
+   :show-inheritance:
