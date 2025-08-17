@@ -12,9 +12,10 @@ A comprehensive implementation of tokenization algorithms used in Large Language
 
 ## 📚 Documentation
 
-- **[Diagram Creation Prompt](diagram_creation_prompt.md)** - Optimized prompt for creating professional diagrams
-- **[Usage Guide](usage_guide.md)** - How to use the tokenization tools
-- **[GitHub Pages Setup](GITHUB_PAGES_SETUP.md)** - Enable automatic documentation deployment
+- **[Technical Overview](docs/README.md)** - System architecture and implementation details
+- **[API Reference](docs/API.md)** - Complete function documentation and examples
+- **[System Architecture](docs/ARCHITECTURE.md)** - Component design and data flow
+- **[ReadTheDocs Setup](README_RTD_SETUP.md)** - How to enable automatic documentation generation
 
 ## 🔧 Quick Start
 
@@ -32,11 +33,21 @@ jupyter notebook scripts/tokenisation.ipynb
 
 ## 🌐 Live Documentation
 
-This project automatically deploys documentation to GitHub Pages with every commit. To enable:
+This project automatically generates and deploys documentation to ReadTheDocs with every commit. The documentation includes:
 
-1. Go to repository Settings → Pages
-2. Select "GitHub Actions" as source
-3. Documentation will be available at: `https://yourusername.github.io/gpt-tokenizer`
+- **API Reference**: Auto-generated from Python docstrings
+- **Architecture Guide**: System design and implementation details
+- **Examples**: Practical usage examples and tutorials
+- **Performance Analysis**: Time complexity and memory usage
+
+**Documentation URL**: `https://gpt-tokenizer.readthedocs.io/`
+
+### Automatic Updates
+
+- Every commit to `main` branch triggers documentation rebuild
+- API documentation automatically extracted from code
+- Multiple formats: HTML, PDF, and ePub
+- Version control for different releases
 
 ## 📁 Project Structure
 
@@ -49,7 +60,7 @@ This project automatically deploys documentation to GitHub Pages with every comm
 │   └── helpers.py            # Utility functions
 ├── imgs/                     # Diagrams and visualizations
 ├── tests/                    # Test files
-└── .github/workflows/        # GitHub Actions for automation
+└── .github/workflows/        # CI/CD automation for docs and testing
 ```
 
 ## 🎯 What You'll Learn

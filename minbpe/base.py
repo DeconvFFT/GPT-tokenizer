@@ -41,3 +41,39 @@ def merge_pair(indices:list[int], pair:tuple[int, int], new_idx: int)->list[int]
             new_indices.append(indices[i])
             i+=1
     return new_indices
+
+def replace_control_characters(s:str)->str:
+    """ Avoid printing control characters that can destort the output.
+    Like \n, \t, \r, etc.
+    
+
+    Args:
+        s (str): _description_
+
+    Returns:
+        str: _description_
+    """
+    #https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python/19016117#19016117
+    #http://www.unicode.org/reports/tr44/#GC_Values_Table
+    chars = []
+    for ch in s:
+        if unicodedata.category(ch)[0] != "C":
+            chars.append(ch) # character is OK
+        else:
+            chars.append(f'\\u{ord(ch):04x}') # escape control characters
+    return "".join(chars)
+
+
+def render_token(t:bytes)->str:
+    """ Pretty prints token
+
+    Args:
+        t (bytes): Token
+
+    Returns:
+        str: Pretty print of the token
+    """
+    s = t.decode("utf-8", errors="replace")
+    s = replace_control_characters(s)
+    return s
+
