@@ -49,6 +49,27 @@ print(f"Base vocabulary size: {len(tokenizer.vocab)}")
 # Output: Base vocabulary size: 256
 ```
 
+### Using the BasicTokenizer
+
+```python
+from minbpe import BasicTokenizer
+
+# Create and train a basic tokenizer
+tokenizer = BasicTokenizer()
+text = "Hello world! This is a test of the BPE algorithm."
+tokenizer.train(text, vocab_size=300, verbose=True)
+
+# Check the trained vocabulary
+print(f"Trained vocabulary size: {len(tokenizer.vocab)}")
+print(f"Number of merges learned: {len(tokenizer.merges)}")
+
+# Encode and decode text
+encoded = tokenizer.encode("Hello world!")
+print(f"Encoded: {encoded}")
+decoded = tokenizer.decode(encoded)
+print(f"Decoded: {decoded}")
+```
+
 ### Using Utility Functions
 
 ```python
@@ -82,6 +103,51 @@ token = b"Hello\nWorld"
 rendered = render_token(token)
 print(f"Rendered: {rendered}")
 # Output: Rendered: Hello\u000aWorld
+```
+
+## Training Your Own Tokenizer
+
+### Basic Training
+
+```python
+from minbpe import BasicTokenizer
+
+# Create a tokenizer
+tokenizer = BasicTokenizer()
+
+# Train on your text corpus
+training_text = """
+This is a sample text for training a BPE tokenizer.
+The tokenizer will learn to merge frequent byte pairs.
+You can use any text corpus for training.
+"""
+
+# Train with a target vocabulary size
+tokenizer.train(training_text, vocab_size=500, verbose=True)
+
+# Save the trained model
+tokenizer.save("my_trained_tokenizer")
+```
+
+### Advanced Training
+
+```python
+# Train on larger corpus
+with open("large_text_file.txt", "r") as f:
+    large_corpus = f.read()
+
+# Train with larger vocabulary
+tokenizer.train(large_corpus, vocab_size=1000, verbose=True)
+
+# Check compression efficiency
+test_text = "This is a test of the trained tokenizer."
+original_bytes = len(test_text.encode('utf-8'))
+encoded_tokens = len(tokenizer.encode(test_text))
+compression_ratio = original_bytes / encoded_tokens
+
+print(f"Original: {original_bytes} bytes")
+print(f"Encoded: {encoded_tokens} tokens")
+print(f"Compression ratio: {compression_ratio:.2f}")
 ```
 
 ## Examples
