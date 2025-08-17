@@ -16,6 +16,11 @@ def read_requirements():
     with open("requirements.txt", "r", encoding="utf-8") as fh:
         return [line.strip() for line in fh if line.strip() and not line.startswith("#")]
 
+# Read dev requirements
+def read_dev_requirements():
+    with open("requirements-dev.txt", "r", encoding="utf-8") as fh:
+        return [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+
 setup(
     name="gpt-tokenizer",
     version="1.0.0",
@@ -50,16 +55,7 @@ setup(
     python_requires=">=3.8",
     install_requires=read_requirements(),
     extras_require={
-        "dev": [
-            "pytest>=6.0",
-            "pytest-cov>=2.0",
-            "black>=21.0",
-            "flake8>=3.8",
-            "mypy>=0.800",
-            "sphinx>=4.0",
-            "sphinx-rtd-theme>=1.0",
-            "sphinx-autodoc-typehints>=1.12",
-        ],
+        "dev": read_dev_requirements(),
         "docs": [
             "sphinx>=4.0",
             "sphinx-rtd-theme>=1.0",

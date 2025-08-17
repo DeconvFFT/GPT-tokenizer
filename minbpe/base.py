@@ -77,3 +77,16 @@ def render_token(t:bytes)->str:
     s = replace_control_characters(s)
     return s
 
+class Tokenizer:
+    """ Base class for all tokenizers
+    """
+    
+    def __init__(self):
+        self.merges = {}
+        self.pattern = ""
+        self.special_tokens = {} # Special tokens like <|endoftext|>
+        self.vocab = self._build_vocab()
+        
+    def _build_vocab(self)->dict[int, str]:
+        
+        return {}
