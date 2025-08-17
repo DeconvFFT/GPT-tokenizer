@@ -87,6 +87,41 @@ class Tokenizer:
         self.special_tokens = {} # Special tokens like <|endoftext|>
         self.vocab = self._build_vocab()
         
-    def _build_vocab(self)->dict[int, str]:
-        
-        return {}
+    def _build_vocab(self)->dict[int, bytes]:
+        """
+        Build vocbulary of bytes from indices and merges
+
+        Returns:
+            dict[int, bytes]: Vocabulary of bytes
+        """
+        vocab = {idx:bytes(idx) for idx in range(256)}
+        for (p0,p1), idx in self.merges.items():
+            vocab[idx] = vocab[p0] + vocab[p1] # merges two bytes
+        for special_token, idx in self.special_tokens.items():
+            vocab[idx] = special_token.encode('utf-8') # UTF-8 encoding for special tokens
+        return vocab
+    
+    def train(self, text:str, vocab_size:int, verbose:bool=False)->None:
+        """_summary_
+
+        Args:
+            text (str): Text you want to train the tokenizer on
+            vocab_size (int): Maximum vocab size you want to have
+            verbose (bool, optional): Show logs or not. Defaults to False.
+
+        Raises:
+            NotImplementedError: Error when training module is not implemented
+
+        Returns:
+            None
+        """
+        raise NotImplementedError("Tokenizer.train() not implemented")
+    def encode(self, text:str):
+        # Tokenizer can encode a string into a list of integers
+        raise NotImplementedError("Encoder not implemented")
+
+    def decode(self, ids:list[int])->str:
+        # Tokenizer can decode a list of integers into a string
+        raise NotImplementedError("Decoder not implemented")
+    
+    

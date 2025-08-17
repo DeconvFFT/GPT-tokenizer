@@ -13,13 +13,14 @@ build:
   tools:
     python: "3.12"
 
-# Install the package
+# Install the package with documentation dependencies
 python:
   install:
     - method: pip
       path: .
       extra_requirements:
         - docs
+    - requirements: requirements-dev.txt
 
 # Optionally build your docs in additional formats such as PDF and ePub
 formats:
