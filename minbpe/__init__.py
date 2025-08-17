@@ -7,7 +7,7 @@ class and utility functions for building custom tokenizers.
 
 Examples
 --------
->>> from minbpe import Tokenizer, BasicTokenizer
+>>> from minbpe import Tokenizer, BasicTokenizer, RegexTokenizer
 >>> # Create a basic tokenizer instance
 >>> tokenizer = Tokenizer()
 >>> print(f"Base vocabulary size: {len(tokenizer.vocab)}")
@@ -19,6 +19,12 @@ Base vocabulary size: 256
 >>> print(f"Trained vocabulary size: {len(basic_tokenizer.vocab)}")
 >>> print(f"Number of merges: {len(basic_tokenizer.merges)}")
 
+>>> # Use the RegexTokenizer for advanced tokenization
+>>> regex_tokenizer = RegexTokenizer()
+>>> regex_tokenizer.train("Hello world! This is a test.", 300)
+>>> regex_tokenizer.register_special_tokens({"<|endoftext|>": 100257})
+>>> print(f"Regex tokenizer vocab size: {len(regex_tokenizer.vocab)}")
+
 >>> from minbpe.base import get_pair_frequencies
 >>> freqs = get_pair_frequencies([72, 101, 108, 108, 111])
 >>> print(f"Byte pair frequencies: {freqs}")
@@ -28,10 +34,12 @@ See Also
 --------
 minbpe.base : Core tokenizer implementation and utilities
 minbpe.basic_tokenizer : Basic BPE implementation with training
+minbpe.regex_tokenizer : Regex-based BPE with special token support
 """
 
 from .base import Tokenizer
 from .basic_tokenizer import BasicTokenizer
+from .regex_tokenizer import RegexTokenizer
 
 __version__ = "0.1.0"
-__all__ = ["Tokenizer", "BasicTokenizer"]
+__all__ = ["Tokenizer", "BasicTokenizer", "RegexTokenizer"]

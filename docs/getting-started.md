@@ -70,6 +70,56 @@ decoded = tokenizer.decode(encoded)
 print(f"Decoded: {decoded}")
 ```
 
+### Using the RegexTokenizer
+
+```python
+from minbpe import RegexTokenizer
+
+# Create a regex tokenizer with default GPT-4 pattern
+tokenizer = RegexTokenizer()
+text = "Hello world! This is a test of the regex BPE algorithm."
+tokenizer.train(text, vocab_size=300, verbose=True)
+
+# Check the trained vocabulary
+print(f"Trained vocabulary size: {len(tokenizer.vocab)}")
+print(f"Using pattern: {tokenizer.pattern[:50]}...")
+
+# Encode and decode text
+encoded = tokenizer.encode("Hello world!")
+print(f"Encoded: {encoded}")
+decoded = tokenizer.decode(encoded)
+print(f"Decoded: {decoded}")
+
+# Use with special tokens
+tokenizer.register_special_tokens({"<|endoftext|>": 100257})
+encoded = tokenizer.encode("Hello <|endoftext|>", allowed_special_tokens="all")
+print(f"With special tokens: {encoded}")
+```
+
+### Using Custom Regex Patterns
+
+```python
+# Create tokenizer with custom pattern
+custom_pattern = r"\w+|\s+|[^\w\s]"
+custom_tokenizer = RegexTokenizer(custom_pattern)
+
+# Train on text
+custom_tokenizer.train("Hello world! This is a test.", 300)
+print(f"Custom pattern: {custom_tokenizer.pattern}")
+
+# Compare with default pattern
+default_tokenizer = RegexTokenizer()
+default_tokenizer.train("Hello world! This is a test.", 300)
+
+# Encode same text with different patterns
+text = "Hello world!"
+custom_encoded = custom_tokenizer.encode(text)
+default_encoded = default_tokenizer.encode(text)
+
+print(f"Custom pattern tokens: {len(custom_encoded)}")
+print(f"Default pattern tokens: {len(default_encoded)}")
+```
+
 ### Using Utility Functions
 
 ```python
@@ -103,6 +153,74 @@ token = b"Hello\nWorld"
 rendered = render_token(token)
 print(f"Rendered: {rendered}")
 # Output: Rendered: Hello\u000aWorld
+```
+
+## Working with Special Tokens
+
+### Understanding Special Tokens
+
+Special tokens are reserved vocabulary items that have specific meanings in language models:
+
+```python
+from minbpe import RegexTokenizer
+
+# Common special tokens
+special_tokens = {
+    "<|endoftext|>": 100257,  # End of text marker
+    "<|pad|>": 100258,        # Padding token
+    "<|unk|>": 100259,        # Unknown token
+    "<|start|>": 100260,      # Start of sequence
+    "<|end|>": 100261         # End of sequence
+}
+
+tokenizer = RegexTokenizer()
+tokenizer.register_special_tokens(special_tokens)
+print(f"Registered {len(tokenizer.special_tokens)} special tokens")
+```
+
+### Special Token Encoding Modes
+
+```python
+# Different ways to handle special tokens during encoding
+text = "Hello <|endoftext|> world!"
+
+# Mode 1: Process all special tokens
+encoded_all = tokenizer.encode(text, allowed_special_tokens="all")
+print(f"All special tokens: {encoded_all}")
+
+# Mode 2: Ignore all special tokens
+encoded_none = tokenizer.encode(text, allowed_special_tokens="none")
+print(f"No special tokens: {encoded_none}")
+
+# Mode 3: Raise error if special tokens found
+try:
+    encoded_strict = tokenizer.encode(text, allowed_special_tokens="none_raise")
+except AssertionError as e:
+    print(f"Strict mode error: {e}")
+
+# Mode 4: Selective special token processing
+encoded_selective = tokenizer.encode(text, allowed_special_tokens={"<|endoftext|>"})
+print(f"Selective tokens: {encoded_selective}")
+```
+
+### Advanced Regex Pattern Usage
+
+```python
+# Compare different regex patterns
+patterns = {
+    "Simple": r"\w+|\s+|[^\w\s]",
+    "GPT-2": r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""",
+    "GPT-4": r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
+}
+
+# Test each pattern
+test_text = "Hello world! This is a test. Don't worry about it."
+
+for name, pattern in patterns.items():
+    tokenizer = RegexTokenizer(pattern)
+    tokenizer.train(test_text, 300)
+    encoded = tokenizer.encode(test_text)
+    print(f"{name} pattern: {len(encoded)} tokens")
 ```
 
 ## Training Your Own Tokenizer
