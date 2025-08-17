@@ -21,6 +21,9 @@ project = 'GPT-Tokenizer'
 copyright = '2024, GPT-Tokenizer Contributors'
 author = 'GPT-Tokenizer Contributors'
 
+# The master document
+master_doc = 'index'
+
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 version = '1.0.0'
@@ -188,3 +191,6 @@ epub_exclude_files = ['search.html']
 # Configure autodoc to handle type hints properly
 autodoc_member_order = 'bysource'
 autodoc_preserve_defaults = True
+
+# Mock imports for problematic modules
+autodoc_mock_imports = ['unicodedata']

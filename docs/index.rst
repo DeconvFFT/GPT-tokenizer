@@ -8,8 +8,6 @@ A comprehensive implementation of tokenization algorithms used in Large Language
    :caption: Contents:
 
    README
-   API
-   ARCHITECTURE
 
 .. toctree::
    :maxdepth: 2
@@ -35,17 +33,16 @@ Quick Start
 
 .. code-block:: python
 
-    from minbpe import GPT4BPETokenizer
+    from minbpe import Tokenizer
     
-    # Create and train tokenizer
-    tokenizer = GPT4BPETokenizer(vocab_size=1000)
-    tokenizer.train(["Hello world!", "Machine learning is fascinating."])
+    # Create tokenizer instance
+    tokenizer = Tokenizer()
     
-    # Encode and decode
-    tokens = tokenizer.encode("Hello AI!")
-    text = tokenizer.decode(tokens)
-    print(f"Tokens: {tokens}")
-    print(f"Decoded: {text}")
+    # Train the tokenizer
+    tokenizer.train("Hello world! This is a test.", vocab_size=1000)
+    
+    # Use the tokenizer
+    print(f"Vocabulary size: {len(tokenizer.vocab)}")
 
 Installation
 ------------
@@ -66,6 +63,7 @@ Features
 Performance
 -----------
 
-* **Encoding**: O(t × log v) where t is text length, v is vocabulary size
-* **Decoding**: O(t) where t is number of tokens
+* **Training**: O(n × m × v²) where n=corpus size, m=text length, v=vocabulary size
+* **Encoding**: O(t × (r + log v)) where t=text length, r=merge rules, v=vocabulary size
+* **Decoding**: O(t) where t=number of tokens
 * **Memory**: O(v) vocabulary storage, O(m) merge rules
