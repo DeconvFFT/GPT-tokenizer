@@ -40,8 +40,20 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
+    'sphinx.ext.doctest',
+    'sphinx.ext.todo',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.linkcode',
     'sphinx_rtd_theme',
 ]
+
+# Enable autosummary to generate stub files
+autosummary_generate = True
+
+# Enable todo extension
+todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -102,7 +114,31 @@ autodoc_default_options = {
     'undoc-members': True,
     'exclude-members': '__weakref__',
     'show-inheritance': True,
+    'inherited-members': True,
+    'show-inheritance': True,
+    'member-order': 'bysource',
+    'undoc-members': True,
+    'private-members': False,
+    'special-members': '__init__,__call__,__getitem__,__setitem__,__len__,__str__,__repr__',
+    'exclude-members': '__weakref__,__dict__,__module__,__slots__',
 }
+
+# Enhanced autodoc settings for decorators and code changes
+autodoc_preserve_defaults = True
+autodoc_class_signature = "separated"
+autodoc_member_order = 'bysource'
+autodoc_typehints_format = 'short'
+autodoc_typehints_description_target = 'documented'
+
+# Enable automatic detection of code changes
+autodoc_default_flags = ['members', 'undoc-members', 'show-inheritance']
+autodoc_docstring_signature = True
+autodoc_keep_warnings = True
+
+# Advanced type hint processing
+autodoc_typehints_use_signature = True
+autodoc_typehints_use_signature_return = True
+autodoc_unqualified_typehints = True
 
 # -- Options for napoleon ---------------------------------------------------
 
@@ -205,3 +241,22 @@ autodoc_preserve_defaults = True
 
 # Mock imports for problematic modules
 autodoc_mock_imports = ['unicodedata']
+
+# -- Linkcode extension configuration ----------------------------------------
+
+# Automatically link to source code on GitHub
+def linkcode_resolve(domain, info):
+    if domain != 'py':
+        return None
+    if not info['module']:
+        return None
+    
+    filename = info['module'].replace('.', '/')
+    if info.get('fullname'):
+        filename += '.py'
+    
+    # Link to the latest version on GitHub
+    return f"https://github.com/DeconvFFT/GPT-tokenizer/blob/main/{filename}#L1"
+
+# Enable automatic source code linking
+linkcode_url = "https://github.com/DeconvFFT/GPT-tokenizer/blob/main"

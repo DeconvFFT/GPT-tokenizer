@@ -19,6 +19,37 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import argparse
+from functools import wraps
+
+def log_operation(func):
+    """Decorator to log all agent operations for debugging and monitoring."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        logger = logging.getLogger('ExpertDocWriter')
+        logger.debug(f"Starting operation: {func.__name__}")
+        start_time = time.time()
+        try:
+            result = func(*args, **kwargs)
+            duration = time.time() - start_time
+            logger.debug(f"Operation {func.__name__} completed in {duration:.2f}s")
+            return result
+        except Exception as e:
+            duration = time.time() - start_time
+            logger.error(f"Operation {func.__name__} failed after {duration:.2f}s: {e}")
+            raise
+    return wrapper
+
+def validate_repository(func):
+    """Decorator to validate git repository state before operations."""
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if not hasattr(self, 'repo') or not self.repo:
+            raise RuntimeError("Git repository not initialized")
+        if self.repo.is_dirty():
+            logger = logging.getLogger('ExpertDocWriter')
+            logger.warning("Repository has uncommitted changes")
+        return func(self, *args, **kwargs)
+    return wrapper
 
 class ExpertDocWriter:
     """Expert Document Writer Agent for automated documentation management."""
@@ -56,6 +87,7 @@ class ExpertDocWriter:
         
         self.logger.info("Configuration loaded successfully")
     
+    @log_operation
     def setup_logging(self, log_level: str):
         """Setup comprehensive logging with file and console output."""
         # Create formatter
@@ -84,6 +116,7 @@ class ExpertDocWriter:
         
         self.logger.info(f"Logging setup complete. Log file: {self.log_file}")
     
+    @log_operation
     def load_master_prompt(self) -> str:
         """Load the master documentation automation prompt."""
         prompt_file = self.repo_path / "prompts" / "documentation_automation_master.md"
@@ -101,6 +134,7 @@ class ExpertDocWriter:
             self.logger.error(f"Failed to load master prompt: {e}")
             return ""
     
+    @log_operation
     def get_last_processed_commit(self) -> Optional[str]:
         """Get the last processed commit hash."""
         if self.last_update_file.exists():
@@ -111,6 +145,7 @@ class ExpertDocWriter:
                 self.logger.warning(f"Failed to read last update file: {e}")
         return None
     
+    @log_operation
     def save_last_processed_commit(self, commit_hash: str):
         """Save the last processed commit hash."""
         try:
@@ -120,6 +155,8 @@ class ExpertDocWriter:
         except Exception as e:
             self.logger.error(f"Failed to save last processed commit: {e}")
     
+    @log_operation
+    @validate_repository
     def detect_code_changes(self, since_commit: Optional[str] = None) -> Tuple[bool, List[str]]:
         """Detect if there are code changes since the last update."""
         self.logger.info("Detecting code changes...")
@@ -158,6 +195,7 @@ class ExpertDocWriter:
             self.logger.error(f"Error detecting code changes: {e}")
             return False, []
     
+    @log_operation
     def build_documentation(self) -> bool:
         """Build the documentation using Sphinx."""
         self.logger.info("Building documentation...")
@@ -198,6 +236,8 @@ class ExpertDocWriter:
             self.logger.error(f"Error building documentation: {e}")
             return False
     
+    @log_operation
+    @validate_repository
     def commit_documentation_updates(self, commit_message: str) -> bool:
         """Commit documentation updates to git."""
         if not self.config["auto_commit"]:
@@ -224,6 +264,8 @@ class ExpertDocWriter:
             self.logger.error(f"Failed to commit documentation updates: {e}")
             return False
     
+    @log_operation
+    @validate_repository
     def push_documentation_updates(self) -> bool:
         """Push documentation updates to remote repository."""
         if not self.config["auto_push"]:
@@ -242,6 +284,7 @@ class ExpertDocWriter:
             self.logger.error(f"Failed to push documentation updates: {e}")
             return False
     
+    @log_operation
     def update_documentation(self) -> bool:
         """Main method to update documentation if needed."""
         self.logger.info("=" * 60)
@@ -297,6 +340,7 @@ class ExpertDocWriter:
         self.logger.info("Documentation update completed successfully!")
         return True
     
+    @log_operation
     def run_monitoring_loop(self):
         """Run the continuous monitoring loop."""
         self.logger.info("Starting continuous monitoring loop...")
@@ -326,6 +370,7 @@ class ExpertDocWriter:
         except Exception as e:
             self.logger.error(f"Unexpected error in monitoring loop: {e}")
     
+    @log_operation
     def show_status(self):
         """Show current status of the documentation system."""
         self.logger.info("=" * 60)
