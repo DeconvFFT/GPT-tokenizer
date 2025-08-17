@@ -389,6 +389,226 @@ python -m http.server 8000  # Preview locally
 - Verify documentation accessibility
 - Test local builds regularly
 
+### **4. Periodic Codebase Monitoring (NEW)**
+```bash
+# Automated monitoring script (monitor-codebase.sh)
+#!/bin/bash
+# Run this script every hour via cron or GitHub Actions
+
+REPO_PATH="$(pwd)"
+LAST_COMMIT_FILE=".last_docs_update"
+DOCS_DIR="docs"
+
+# Get last processed commit
+if [ -f "$LAST_COMMIT_FILE" ]; then
+    LAST_PROCESSED=$(cat "$LAST_COMMIT_FILE")
+else
+    LAST_PROCESSED=""
+fi
+
+# Get current HEAD
+CURRENT_COMMIT=$(git rev-parse HEAD)
+
+# Check if there are new commits
+if [ "$LAST_PROCESSED" != "$CURRENT_COMMIT" ]; then
+    echo "New commits detected, updating documentation..."
+    
+    # Check for code changes
+    if git diff --name-only "$LAST_PROCESSED" HEAD | grep -E "\.(py|js|ts|java|cpp|h|hpp)$" > /dev/null; then
+        echo "Code changes detected, rebuilding documentation..."
+        
+        # Update documentation
+        cd "$DOCS_DIR"
+        make clean
+        make html
+        
+        if [ $? -eq 0 ]; then
+            echo "Documentation updated successfully"
+            echo "$CURRENT_COMMIT" > "../$LAST_COMMIT_FILE"
+            
+            # Commit and push documentation updates
+            git add .
+            git commit -m "Auto-update docs for commit $CURRENT_COMMIT" || true
+            git push origin main || true
+        else
+            echo "Documentation build failed"
+        fi
+    else
+        echo "No code changes, skipping documentation update"
+        echo "$CURRENT_COMMIT" > "$LAST_COMMIT_FILE"
+    fi
+else
+    echo "No new commits, documentation is up to date"
+fi
+```
+
+### **5. GitHub Actions Scheduled Monitoring**
+```yaml
+# .github/workflows/monitor-docs.yml
+name: Monitor and Update Documentation
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  monitor-and-update:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for diffing
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        
+    - name: Check for code changes
+      id: check-changes
+      run: |
+        # Get last documentation update
+        if [ -f ".last_docs_update" ]; then
+          LAST_UPDATE=$(cat .last_docs_update)
+        else
+          # If no last update file, check last 24 hours
+          LAST_UPDATE=$(git log --since="24 hours ago" --format="%H" | tail -1)
+        fi
+        
+        # Check for code changes since last update
+        if [ -n "$LAST_UPDATE" ]; then
+          CHANGES=$(git diff --name-only "$LAST_UPDATE" HEAD | grep -E "\.(py|js|ts|java|cpp|h|hpp)$" | wc -l)
+        else
+          CHANGES=0
+        fi
+        
+        echo "changes=$CHANGES" >> $GITHUB_OUTPUT
+        echo "last_update=$LAST_UPDATE" >> $GITHUB_OUTPUT
+        
+    - name: Update documentation if needed
+      if: steps.check-changes.outputs.changes != '0'
+      run: |
+        echo "Code changes detected, updating documentation..."
+        
+        # Install package
+        pip install -e .
+        
+        # Build documentation
+        cd docs
+        make clean
+        make html
+        
+        # Check build success
+        if [ -d "_build/html" ]; then
+          echo "Documentation built successfully"
+          
+          # Update last update timestamp
+          echo "$(git rev-parse HEAD)" > "../.last_docs_update"
+          
+          # Commit documentation updates
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Auto-update docs for code changes" || true
+          git push origin main || true
+          
+          echo "Documentation updated and committed"
+        else
+          echo "Documentation build failed"
+          exit 1
+        fi
+        
+    - name: Skip update if no changes
+      if: steps.check-changes.outputs.changes == '0'
+      run: |
+        echo "No code changes detected, skipping documentation update"
+        echo "$(git rev-parse HEAD)" > ".last_docs_update"
+```
+
+### **6. Local Monitoring Setup**
+```bash
+# Setup local monitoring (add to your shell profile)
+alias monitor-docs='cd /path/to/your/project && ./monitor-codebase.sh'
+
+# Add to crontab for automatic monitoring
+# crontab -e
+# 0 * * * * cd /path/to/your/project && ./monitor-codebase.sh >> /tmp/docs-monitor.log 2>&1
+```
+
+### **7. Monitoring Configuration**
+```yaml
+# .docs-monitor.yml (optional configuration)
+monitoring:
+  interval_hours: 1
+  check_extensions:
+    - py
+    - js
+    - ts
+    - java
+    - cpp
+    - h
+    - hpp
+  exclude_patterns:
+    - "tests/"
+    - "docs/"
+    - "*.md"
+    - "*.txt"
+  notification:
+    email: "your-email@example.com"
+    slack_webhook: "https://hooks.slack.com/..."
+  auto_commit: true
+  auto_push: true
+  build_timeout_minutes: 30
+```
+
+### **8. Monitoring Best Practices**
+```bash
+# 1. Start with manual monitoring first
+./monitor-codebase.sh
+
+# 2. Check logs for any issues
+tail -f /tmp/docs-monitor.log
+
+# 3. Test GitHub Actions workflow manually
+# Go to Actions tab → monitor-docs → Run workflow
+
+# 4. Verify monitoring is working
+git log --oneline --since="1 hour ago" | grep "Auto-update docs"
+
+# 5. Set up notifications (optional)
+# Configure email or Slack notifications for build failures
+```
+
+### **9. Monitoring Troubleshooting**
+```bash
+# Common monitoring issues and solutions
+
+# Issue: Monitoring script fails silently
+# Solution: Add logging and error handling
+./monitor-codebase.sh 2>&1 | tee -a /tmp/docs-monitor.log
+
+# Issue: GitHub Actions not running on schedule
+# Solution: Check repository permissions and workflow file syntax
+# Verify cron syntax: https://crontab.guru/
+
+# Issue: Documentation not updating despite code changes
+# Solution: Check file extension patterns and exclude rules
+# Verify .last_docs_update file is being updated
+
+# Issue: Build failures during monitoring
+# Solution: Check requirements and dependencies
+# Verify local builds work before enabling monitoring
+```
+
 ## 📋 **Pre-Flight Checklist**
 
 Before implementing any documentation automation:
@@ -401,6 +621,7 @@ Before implementing any documentation automation:
 - [ ] **Tested local builds before pushing**
 - [ ] **Verified CI/CD workflow syntax**
 - [ ] **Checked ReadTheDocs configuration compatibility**
+- [ ] **Set up periodic monitoring**
 
 ## 🎯 **Success Metrics**
 
@@ -410,6 +631,8 @@ Before implementing any documentation automation:
 - ✅ **Import errors handled** gracefully
 - ✅ **Theme fallbacks work** when primary fails
 - ✅ **Adaptive structure** works with any folder layout
+- ✅ **Periodic monitoring** runs every hour automatically
+- ✅ **Documentation stays synchronized** with codebase changes
 
 ## 🚨 **Common Pitfalls to Avoid**
 
