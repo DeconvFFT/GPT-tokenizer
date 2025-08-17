@@ -23,28 +23,7 @@ build:
   tools:
     python: "3.12"
 
-# Optionally set the version of Python and requirements required to build your docs
-# python:
-#   version: "3.12"
-#   install:
-#     - requirements: requirements-dev.txt
-#     - method: pip
-#       path: .
-#       extra_requirements:
-#         - docs
-
 # Optionally build your docs in additional formats such as PDF and ePub
 formats:
   - pdf
   - epub
-
-# Optionally provide the custom build commands to test your docs integrity
-# build:
-#   os: ubuntu-22.04
-#   tools:
-#     python: "3.12"
-#   commands:
-#     - pip install -r requirements-dev.txt
-#     - pip install -e .
-#     - cd docs && make apidoc
-#     - cd docs && make html
