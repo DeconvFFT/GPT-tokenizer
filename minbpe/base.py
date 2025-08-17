@@ -124,4 +124,60 @@ class Tokenizer:
         # Tokenizer can decode a list of integers into a string
         raise NotImplementedError("Decoder not implemented")
     
+    def save(self, file_prefix:str)->None:
+        """
+        Saves two files: file_prefix.vocab and file_prefix.model
+        Similar to sentencepiece's model saving format
+        - Model file: The one that should be loaded
+        - Vocab file: Only for human readability
+
+        Args:
+            file_prefix (str): File path prefix
+        """
+        model_file = file_prefix + ".model"
+        vocab_file = file_prefix + ".vocab"
+        with open(model_file, 'w') as f:
+            # Storing version, pattern and merges
+            f.write('minbpe v1\n')
+            f.write(f'{self.pattern}\n')
+            # Write special tokens. First len of special tokens
+            f.write(f'{len(self.special_tokens)}\n')
+            # Write special tokens
+            for token, idx in self.special_tokens.items():
+                f.write(f'{token} {idx}\n')
+            # write merges
+            for idx1, idx2 in self.merges.items():
+                f.write(f'{idx1} {idx2}\n')
+        
+        ## Write vocab file
+        inverted_merges = {idx: pairs for pairs, idx in self.merges.items()}
+        with open(vocab_file, 'w', encoding='utf-8') as f:
+            for idx, token in self.vocab.items():
+                ## Some tokens are partial utf-8 sequences which we escaped using 'replace' and replaced them
+                ## with special character
+                ## We can't load them for our model because this is a lossy decoding. 
+                ## So we don't use .vocab for loading this model
+                s = render_token(token)
+                if idx in inverted_merges:
+                    # If the token has children, render them as merges
+                    pairs = inverted_merges[idx]
+                    pairs[0] = render_token(pairs[0])
+                    pairs[1] = render_token(pairs[1])
+                    f.write(f'[{pairs[0]}][{pairs[1]}] -> [{s}]{idx}\n')
+                else:
+                    # Else this is a leaf token, just print it
+                    f.write(f'[{s}] {idx}\n')
     
+    def load(self, model_file:str)->None:
+        """
+        Loads a model from a file
+        """
+        assert model_file.endswith('.model'), "Model file must end with .model"
+        merges = {}
+        special_tokens = {}
+        idx = 256
+        
+        
+        
+        
+        
