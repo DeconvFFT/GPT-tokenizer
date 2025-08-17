@@ -176,7 +176,30 @@ class Tokenizer:
         merges = {}
         special_tokens = {}
         idx = 256
+        with open(model_file, 'r') as f:
+            # Step 1: Read the version
+            version = f.readline().strip()
+            assert version == 'minbpe v1', "Model file is not a minbpe model"
+            # Step 2: Read the pattern
+            pattern = f.readline().strip()
+            # Step 3: Read special tokens
+            n_special_tokens = int(f.readline().strip())
+            for _ in range(n_special_tokens):
+                token, idx = f.readline().strip().split()
+                special_tokens[token] = int(idx)
+            # Step 4: Read merges
+            for line in f:
+                idx1, idx2 = map(int, line.split())
+                # we are increasing our vocab size by 1 for each merge
+                merges[(idx1, idx2)] = idx # merges at idx 
+                idx+=1 # increment index to make it ready fo next set of merges
         
+        self.merges = merges
+        self.pattern = pattern
+        self.special_tokens = special_tokens
+        self.vocab = self._build_vocab() # building vocab for human readability
+                
+                
         
         
         
