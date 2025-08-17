@@ -20,7 +20,6 @@ python:
       path: .
       extra_requirements:
         - docs
-  system_packages: false
 
 # Optionally build your docs in additional formats such as PDF and ePub
 formats:
