@@ -21,6 +21,11 @@ API Reference
    :undoc-members:
    :show-inheritance:
 
+.. automodule:: minbpe.gpt4_bpe_tokenizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. automodule:: main
    :members:
    :undoc-members:

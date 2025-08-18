@@ -120,6 +120,82 @@ print(f"Custom pattern tokens: {len(custom_encoded)}")
 print(f"Default pattern tokens: {len(default_encoded)}")
 ```
 
+### Using the GPT4Tokenizer
+
+```python
+from minbpe import GPT4Tokenizer
+
+# Create a GPT-4 compatible tokenizer
+tokenizer = GPT4Tokenizer()
+print(f"GPT-4 vocabulary size: {len(tokenizer.vocab)}")
+print(f"GPT-4 special tokens: {list(tokenizer.special_tokens.keys())}")
+
+# Encode and decode text
+text = "Hello world! This is a test of GPT-4 tokenization."
+encoded = tokenizer.encode(text)
+print(f"Encoded tokens: {len(encoded)}")
+decoded = tokenizer.decode(encoded)
+print(f"Decoded: {decoded}")
+
+# Check byte permutation handling
+print(f"Byte shuffle mapping size: {len(tokenizer.byte_shuffle)}")
+print(f"First few byte mappings: {list(tokenizer.byte_shuffle.items())[:5]}")
+
+# Save vocabulary for inspection
+tokenizer.save_vocab("gpt4_vocab.txt")
+print("Vocabulary saved to gpt4_vocab.txt")
+```
+
+### Understanding GPT-4 Tokenizer Features
+
+The GPT4Tokenizer provides several unique features:
+
+```python
+# 1. Pretrained weights from tiktoken
+tokenizer = GPT4Tokenizer()
+print(f"Loaded from tiktoken cl100k_base")
+print(f"Number of merges: {len(tokenizer.merges)}")
+
+# 2. GPT-4 specific regex pattern
+print(f"Using GPT-4 pattern: {tokenizer.pattern[:50]}...")
+
+# 3. GPT-4 special tokens
+special_tokens = {
+    '<|endoftext|>': 100257,
+    '<|fim_prefix|>': 100258,
+    '<|fim_middle|>': 100259,
+    '<|fim_suffix|>': 100260,
+    '<|endofprompt|>': 100276
+}
+print(f"GPT-4 special tokens: {special_tokens}")
+
+# 4. Byte permutation scheme
+print(f"Byte 65 (ASCII 'A') maps to: {tokenizer.byte_shuffle[65]}")
+print(f"Permuted byte {tokenizer.byte_shuffle[65]} maps back to: {tokenizer.inverse_byte_shuffle[tokenizer.byte_shuffle[65]]}")
+```
+
+### Limitations of GPT4Tokenizer
+
+```python
+# Note: GPT4Tokenizer has some limitations
+tokenizer = GPT4Tokenizer()
+
+# 1. Cannot be saved (read-only wrapper)
+try:
+    tokenizer.save("my_model")
+except NotImplementedError as e:
+    print(f"Save not supported: {e}")
+
+# 2. Cannot be loaded (always uses tiktoken weights)
+try:
+    tokenizer.load("my_model.model")
+except NotImplementedError as e:
+    print(f"Load not supported: {e}")
+
+# 3. Cannot be trained (pretrained only)
+print("GPT4Tokenizer is read-only and cannot be modified")
+```
+
 ### Using Utility Functions
 
 ```python
@@ -266,6 +342,62 @@ compression_ratio = original_bytes / encoded_tokens
 print(f"Original: {original_bytes} bytes")
 print(f"Encoded: {encoded_tokens} tokens")
 print(f"Compression ratio: {compression_ratio:.2f}")
+```
+
+### Using Pretrained Tokenizers
+
+```python
+from minbpe import GPT4Tokenizer
+
+# GPT4Tokenizer comes pretrained from tiktoken
+gpt4_tokenizer = GPT4Tokenizer()
+print(f"GPT-4 vocabulary size: {len(gpt4_tokenizer.vocab)}")
+
+# No training needed - ready to use immediately
+text = "Hello world! This is a test."
+encoded = gpt4_tokenizer.encode(text)
+decoded = gpt4_tokenizer.decode(encoded)
+
+print(f"Original: {text}")
+print(f"Encoded: {len(encoded)} tokens")
+print(f"Decoded: {decoded}")
+
+# Compare with custom trained tokenizer
+custom_tokenizer = BasicTokenizer()
+custom_tokenizer.train(text * 100, vocab_size=300)  # Need training data
+custom_encoded = custom_tokenizer.encode(text)
+
+print(f"Custom tokenizer: {len(custom_encoded)} tokens")
+print(f"GPT-4 tokenizer: {len(encoded)} tokens")
+print(f"GPT-4 is more efficient: {len(custom_encoded) > len(encoded)}")
+```
+
+### Training with Regex Patterns
+
+```python
+from minbpe import RegexTokenizer
+
+# Train with custom regex pattern
+custom_pattern = r"\w+|\s+|[^\w\s]"
+regex_tokenizer = RegexTokenizer(custom_pattern)
+
+# Train on text
+training_text = "Hello world! This is a test. Don't worry about it."
+regex_tokenizer.train(training_text, vocab_size=400, verbose=True)
+
+# Compare patterns
+patterns = {
+    "Custom": custom_pattern,
+    "GPT-2": r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""",
+    "GPT-4": r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
+}
+
+# Test each pattern
+for name, pattern in patterns.items():
+    tokenizer = RegexTokenizer(pattern)
+    tokenizer.train(training_text, 300)
+    encoded = tokenizer.encode(training_text)
+    print(f"{name} pattern: {len(encoded)} tokens")
 ```
 
 ## Examples
