@@ -450,11 +450,10 @@ class Tokenizer:
                 s = render_token(token)
                 if idx in inverted_merges:
                     # If the token has children, render them as merges
-                    pairs = inverted_merges[idx]
-                    pairs = list(pairs)  # Convert tuple to list for modification
-                    pairs[0] = render_token(bytes([pairs[0]]))
-                    pairs[1] = render_token(bytes([pairs[1]]))
-                    f.write(f'[{pairs[0]}][{pairs[1]}] -> [{s}]{idx}\n')
+                    idx0, idx1 = inverted_merges[idx]
+                    s0 = render_token(self.vocab[idx0])
+                    s1 = render_token(self.vocab[idx1])
+                    f.write(f"[{s0}][{s1}] -> [{s}] {idx}\n")
                 else:
                     # Else this is a leaf token, just print it
                     f.write(f'[{s}] {idx}\n')

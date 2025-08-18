@@ -11,3 +11,4 @@ jupyter
 ipykernel
 pydantic 
 pytest
+sentencepiece

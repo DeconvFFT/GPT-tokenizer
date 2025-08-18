@@ -40,6 +40,6 @@ minbpe.regex_tokenizer : Regex-based BPE with special token support
 from .base import Tokenizer
 from .basic_tokenizer import BasicTokenizer
 from .regex_tokenizer import RegexTokenizer
-
+from .gpt4_bpe_tokenizer import GPT4Tokenizer
 __version__ = "0.1.0"
-__all__ = ["Tokenizer", "BasicTokenizer", "RegexTokenizer"]
+__all__ = ["Tokenizer", "BasicTokenizer", "RegexTokenizer", "GPT4Tokenizer"]
